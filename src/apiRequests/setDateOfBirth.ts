@@ -1,6 +1,9 @@
+import { getProjectHost } from "../helpers/getsAPI";
+
 export async function setDateOfBirth(id: string, value: string) {
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `${sessionStorage.getItem("token-type")} ${sessionStorage.getItem("token")}`);
+  const host = getProjectHost();
 
   const raw = JSON.stringify({
     version: 1,
@@ -20,10 +23,8 @@ export async function setDateOfBirth(id: string, value: string) {
   };
 
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/customers/${id}`,
-      requestOptions,
-    );
+    const response = await fetch(`${host}/customers/${id}`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result);
     return json;

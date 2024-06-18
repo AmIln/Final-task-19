@@ -1,3 +1,4 @@
+import { getProjectHost } from "../../helpers/getsAPI";
 import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
 import { apiInitialization } from "../apiInitialization";
 
@@ -6,6 +7,7 @@ export async function apiGetShoppingList(): Promise<ShoppingList | false> {
   const token = sessionStorage.getItem("token");
   const tokenType = sessionStorage.getItem("token-type");
   myHeaders.append("Authorization", `${tokenType} ${token}`);
+  const host = getProjectHost();
 
   const anonymous = `Anonymous-${token}-shopping-list`;
   const userBasket = localStorage.getItem("basketKey");
@@ -20,7 +22,7 @@ export async function apiGetShoppingList(): Promise<ShoppingList | false> {
 
   try {
     const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/shopping-lists/key=${shoppingKey}`, // delete -shopping-list
+      `${host}/shopping-lists/key=${shoppingKey}`, // delete -shopping-list
       requestOptions,
     );
     const result = await response.text();

@@ -1,3 +1,4 @@
+import { getProjectHost } from "../helpers/getsAPI";
 import { getCustomerById } from "./getCustomerById";
 
 export async function apiAddFullAdress(
@@ -11,13 +12,11 @@ export async function apiAddFullAdress(
 ) {
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `${sessionStorage.getItem("token-type")} ${sessionStorage.getItem("token")}`);
+  const host = getProjectHost();
 
   const email = document.getElementById("inform__email") as HTMLInputElement;
   const name = document.getElementById("inform__name") as HTMLInputElement;
   const surname = document.getElementById("inform__lastName") as HTMLInputElement;
-  //const country = document.getElementById("country") as HTMLSelectElement;
-  //const city = document.getElementById("city") as HTMLInputElement;
-  //const postcode = document.getElementById("postcode") as HTMLInputElement;
 
   const customer = await getCustomerById(id);
   const VERSION = customer.version;
@@ -50,10 +49,8 @@ export async function apiAddFullAdress(
   };
 
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/customers/${id}`,
-      requestOptions,
-    );
+    const response = await fetch(`${host}/customers/${id}`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result);
     return json;

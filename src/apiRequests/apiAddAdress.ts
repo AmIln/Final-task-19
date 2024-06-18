@@ -1,8 +1,10 @@
+import { getProjectHost } from "../helpers/getsAPI";
 import { getCustomerById } from "./getCustomerById";
 
 export async function apiAddAdress(id: string, street: string, building: string, apartment: string) {
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `${sessionStorage.getItem("token-type")} ${sessionStorage.getItem("token")}`);
+  const host = getProjectHost();
 
   const email = document.getElementById("input-email") as HTMLInputElement;
   const name = document.getElementById("input-name") as HTMLInputElement;
@@ -42,10 +44,8 @@ export async function apiAddAdress(id: string, street: string, building: string,
   };
 
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/customers/${id}`,
-      requestOptions,
-    );
+    const response = await fetch(`${host}/customers/${id}`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result);
     return json;

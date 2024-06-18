@@ -1,11 +1,13 @@
+import { getAuthUrl } from "../helpers/getsAPI";
 import { createBasket } from "./shoppingList/createBasket";
 
 export async function apiInitialization() {
   const myHeaders = new Headers();
+  const host = getAuthUrl();
 
   myHeaders.append(
     "Authorization",
-    "Basic MG56NkVJV0dYMWxqMlNpeXc4U2FVNHlFOmVXMFRyemo5MHI0QnZlQnpwT1loZ3ZPaVFHQTAyNDRH",
+    "Basic U09VWV8wNGdqRlpZbmo0N0hHQlp1Y3dTOm05S1RNOUpfdkM1OGt2cm9UZmdWVWNrN2ZVdV92WEdq", // new
   );
 
   const raw = "";
@@ -18,10 +20,8 @@ export async function apiInitialization() {
   };
 
   try {
-    const response = await fetch(
-      "https://auth.us-central1.gcp.commercetools.com/oauth/token?grant_type=client_credentials",
-      requestOptions,
-    );
+    const response = await fetch(`${host}/oauth/token?grant_type=client_credentials`, requestOptions);
+
     const result = await response.text();
 
     const token = JSON.parse(result).access_token;

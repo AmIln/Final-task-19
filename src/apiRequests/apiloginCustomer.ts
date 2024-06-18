@@ -1,12 +1,15 @@
 import { checkEmptyBasket } from "../helpers/checks/checkEmptyBasket";
+import { getProjectHost } from "../helpers/getsAPI";
 import { createNotification } from "../notification/createNotificationElem";
 import { transferAnonymousBasket } from "./shoppingList/transferAnonymousBasket";
 
 export const loginUser = async (accessToken: string, email: string, password: string) => {
-  const apiHost = "https://api.us-central1.gcp.commercetools.com";
-  const projectKey = "rsschool-asdaasd";
+  //const apiHost = "https://api.us-central1.gcp.commercetools.com";
+  //const projectKey = "rsschool-asdaasd";
+  const host = getProjectHost();
 
-  const url = `${apiHost}/${projectKey}/me/login`;
+  //const url = `${apiHost}/${projectKey}/me/login`;
+  const url = `${host}/me/login`;
 
   const headers = {
     "Content-Type": "application/json",

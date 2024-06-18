@@ -1,3 +1,4 @@
+import { getProjectHost } from "../../helpers/getsAPI";
 import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
 import { getCustomerById } from "../getCustomerById";
 import { apiGetShoppingList } from "./apiGetShoppingList";
@@ -7,6 +8,7 @@ export async function apiCreateShoppingList(customerId: string): Promise<Shoppin
   const token = sessionStorage.getItem("token");
   const tokenType = sessionStorage.getItem("token-type");
   myHeaders.append("Authorization", `${tokenType} ${token}`);
+  const host = getProjectHost();
 
   const customer = await getCustomerById(customerId);
   const customerShoppingList = (await apiGetShoppingList()) as ShoppingList;
@@ -38,10 +40,8 @@ export async function apiCreateShoppingList(customerId: string): Promise<Shoppin
   };
 
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/shopping-lists`,
-      requestOptions,
-    );
+    const response = await fetch(`${host}/shopping-lists`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result) as ShoppingList;
     return json;
