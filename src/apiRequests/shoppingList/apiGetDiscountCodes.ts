@@ -1,3 +1,5 @@
+import { getProjectHost } from "../../helpers/getsAPI";
+
 export async function apiGetDiscountCodes(parent?: HTMLElement) {
   if (parent) {
     parent.innerHTML = "Your promo codes: ";
@@ -8,6 +10,7 @@ export async function apiGetDiscountCodes(parent?: HTMLElement) {
   const tokenType = sessionStorage.getItem("token-type");
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `${tokenType} ${token}`);
+  const host = getProjectHost();
 
   const requestOptions = {
     method: "GET",
@@ -15,10 +18,8 @@ export async function apiGetDiscountCodes(parent?: HTMLElement) {
     redirect: "follow" as const,
   };
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/cart-discounts`,
-      requestOptions,
-    );
+    const response = await fetch(`${host}/cart-discounts`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result);
     json.results.forEach((item: { id: string; isActive: boolean; name: { en: string } }) => {

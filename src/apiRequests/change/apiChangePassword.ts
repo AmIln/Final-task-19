@@ -1,13 +1,14 @@
 import { getCustomerById } from "../getCustomerById";
 import { ProfileChangeModalWindow } from "../../helpers/creators/profile/profileChangeModalWindow";
+import { getProjectHost } from "../../helpers/getsAPI";
 
 export async function apiChangePassword(idCustomer: string, password: string, newPassword: string) {
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `${sessionStorage.getItem("token-type")} ${sessionStorage.getItem("token")}`);
+  const host = getProjectHost();
 
   const customer = await getCustomerById(idCustomer);
   const VERSION = customer.version;
-  console.log(customer);
 
   const raw = JSON.stringify({
     id: idCustomer,
@@ -24,11 +25,8 @@ export async function apiChangePassword(idCustomer: string, password: string, ne
   };
 
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/customers/password`,
-      requestOptions,
-    );
-    console.log(response);
+    const response = await fetch(`${host}/customers/password`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result);
     if (json.statusCode === 400) {

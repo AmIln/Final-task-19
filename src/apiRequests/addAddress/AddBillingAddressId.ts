@@ -1,9 +1,11 @@
+import { getProjectHost } from "../../helpers/getsAPI";
 import { getCustomerById } from "../getCustomerById";
 import { SetDefaultBillingAddress } from "./SetDefaultBillingAddress";
 
 export async function AddBillingAddressId(id: string, addressId: string) {
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `${sessionStorage.getItem("token-type")} ${sessionStorage.getItem("token")}`);
+  const host = getProjectHost();
   const customer = await getCustomerById(id);
   const VERSION = customer.version;
 
@@ -25,12 +27,11 @@ export async function AddBillingAddressId(id: string, addressId: string) {
   };
 
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/customers/${id}`,
-      requestOptions,
-    );
+    const response = await fetch(`${host}/customers/${id}`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result);
+
     const useDefaulth = document.getElementById("defaulth-billing") as HTMLInputElement;
     if (useDefaulth && useDefaulth.checked) {
       const setDefaulth = SetDefaultBillingAddress(id, addressId);

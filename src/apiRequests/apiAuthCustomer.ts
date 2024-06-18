@@ -1,11 +1,13 @@
+import { getAuthUrl, getClientId, getClientSecret, getProjectKey } from "../helpers/getsAPI";
 import { createNotification } from "../notification/createNotificationElem";
 import { loginUser } from "./apiloginCustomer";
 
 export const apiAuthorizeUser = async () => {
-  const authHost = "https://auth.us-central1.gcp.commercetools.com";
-  const projectKey = "rsschool-asdaasd";
-  const clientId = "FaK8q3E8G33isxu_Nq_LerOh";
-  const clientSecret = "u9mXZFVZZDRvP4i10vNB5zm3FSQJ9uDl";
+  const authHost = getAuthUrl();
+  const projectKey = getProjectKey();
+  const clientId = getClientId();
+  const clientSecret = getClientSecret();
+
   let email: string;
   let password: string;
 
@@ -52,8 +54,10 @@ export const apiAuthorizeUser = async () => {
       );
     }
     const result = await response.json();
+
     localStorage.setItem("access_token", result.access_token);
     localStorage.setItem("refresh_token", result.refresh_token);
+
     await loginUser(result.access_token, email, password);
     return result;
   } catch (error) {

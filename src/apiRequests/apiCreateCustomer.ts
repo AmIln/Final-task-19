@@ -1,3 +1,4 @@
+import { getProjectHost } from "../helpers/getsAPI";
 import { createNotification } from "../notification/createNotificationElem";
 
 export async function apiCreateCustomer(
@@ -12,6 +13,7 @@ export async function apiCreateCustomer(
   const password = passwordInput.value;
   const token = sessionStorage.getItem("token");
   const tokenType = sessionStorage.getItem("token-type");
+  const host = getProjectHost();
 
   const birthInput = document.getElementById("birth") as HTMLInputElement;
   const birth = birthInput.value;
@@ -35,10 +37,8 @@ export async function apiCreateCustomer(
     redirect: "follow" as const,
   };
   try {
-    const response = await fetch(
-      "https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/customers",
-      requestOptions,
-    );
+    const response = await fetch(`${host}/customers`, requestOptions);
+
     if (response.status === 400) {
       const popup = document.querySelector(".popup");
       const popupButton = document.querySelector(".popup__button") as HTMLButtonElement;

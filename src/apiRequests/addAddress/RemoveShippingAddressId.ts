@@ -1,8 +1,10 @@
+import { getProjectHost } from "../../helpers/getsAPI";
 import { getCustomerById } from "../getCustomerById";
 
 export async function RemoveShippingAddressId(id: string, addressId: string) {
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `${sessionStorage.getItem("token-type")} ${sessionStorage.getItem("token")}`);
+  const host = getProjectHost();
   const customer = await getCustomerById(id);
   const VERSION = customer.version;
 
@@ -24,10 +26,8 @@ export async function RemoveShippingAddressId(id: string, addressId: string) {
   };
 
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/customers/${id}`,
-      requestOptions,
-    );
+    const response = await fetch(`${host}/customers/${id}`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result);
     return json;

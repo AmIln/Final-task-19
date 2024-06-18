@@ -1,3 +1,4 @@
+import { getProjectHost } from "../../helpers/getsAPI";
 import { getCustomerById } from "../getCustomerById";
 
 export async function apiChangeAddress(
@@ -12,6 +13,7 @@ export async function apiChangeAddress(
 ) {
   const myHeaders = new Headers();
   myHeaders.append("Authorization", `${sessionStorage.getItem("token-type")} ${sessionStorage.getItem("token")}`);
+  const host = getProjectHost();
 
   const customer = await getCustomerById(idCustomer);
   const VERSION = customer.version;
@@ -45,10 +47,8 @@ export async function apiChangeAddress(
   };
 
   try {
-    const response = await fetch(
-      `https://api.us-central1.gcp.commercetools.com/rsschool-asdaasd/customers/${idCustomer}`,
-      requestOptions,
-    );
+    const response = await fetch(`${host}/customers/${idCustomer}`, requestOptions);
+
     const result = await response.text();
     const json = JSON.parse(result);
     return json;
