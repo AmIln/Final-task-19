@@ -1,0 +1,40 @@
+
+{
+  "id": "7825647d-5448-42c0-976d-83c7cdb2cbb2",
+  "name": "rsschool-asdaasd",
+  "values": [
+    {
+      "key": "host",
+      "value": "https://api.us-central1.gcp.commercetools.com",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "auth_url",
+      "value": "https://auth.us-central1.gcp.commercetools.com",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "project-key",
+      "value": "rsschool-asdaasd",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "client_id",
+      "value": "6n99BdSlTvHj1LWGuN5czlCo",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "client_secret",
+      "value": "dD1mR8HnAaXKlwjplNmW-LvkgM5aK5Ro",
+      "enabled": true,
+      "type": "text"
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2024-05-02T05:44:55.056Z",
+  "_postman_exported_using": "Postman/6.0.10"
+}

@@ -1,0 +1,47 @@
+.about_titul{
+    color: white;
+    font-size: 40px;
+    width: 100vw;
+    text-align: center;
+}
+
+.about_page_description{
+    color: white;
+    font-size: 16px;
+    width: 90vw;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.member_card_wraper{
+    display: flex;
+    color: white;
+    width: 80vw;
+    max-width: 900px;
+}
+.member_photo{
+    width: 110px;
+    height: 130px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+.about_git_link{
+    color: white;
+    text-decoration: none;
+    transition: all ease 0.5s;
+}
+.about_git_link:hover{
+    color: #646cff;;
+}
+.school_logo{
+    max-width: 120px;
+}
+
+@media screen and (max-width: 600px) {
+    .member_card_wraper{
+        flex-direction: column;
+        align-items: center;
+    }
+}

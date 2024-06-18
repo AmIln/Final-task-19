@@ -1,0 +1,51 @@
+.main {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 2%;
+  // overflow-x: scroll;
+}
+
+.content {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2%;
+  overflow-x: hidden;
+  background-color: #03071e;
+}
+.content > * {
+  margin: 20px 0;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.productsMain {
+  position: relative;
+  width: 96%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.discount_codes_wraper{
+  background-color: #fb8500;
+  width: 100vw;
+  text-align: center;
+}
+
+@media (max-width: 750px) {
+  .content > * {
+    margin: 40px 0;
+  }
+}
+

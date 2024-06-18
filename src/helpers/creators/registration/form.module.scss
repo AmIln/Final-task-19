@@ -1,0 +1,105 @@
+.form {
+  width: 98vw;
+  height: auto;
+  display: flex;
+}
+.fieldset {
+  width: 100%;
+  height: 100%;
+  padding: 20px 10px;
+  margin: 0 5px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 2rem;
+  border-radius: 20px;
+  color: white;
+  background-color: #1c26427f;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  box-shadow: 0 0 5px #646cff;
+  border-color: #2724dc;
+}
+
+.input_registration {
+  width: 60%;
+  height: 100%;
+  padding: 0 30px;
+  font-size: 1.2rem;
+  border: 1px solid grey;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+.input_registration:focus {
+  border: none;
+  box-shadow: 0 0 20px #2724dc;
+  outline: none !important;
+}
+
+.label-registration {
+  display: none;
+}
+.label-registration_active {
+  position: revert-layer;
+  text-align: center;
+  display: flex;
+  font-size: 0.8rem;
+  color: red;
+  word-break: break-word;
+}
+
+.button-form {
+  width: 60%;
+  height: 50px;
+  cursor: pointer;
+  // background-color: transparent;
+  background-color: #454ef8;
+  box-shadow: 0 0 10px #646cff;
+  border-color:#2724dc;
+  color: white;
+  text-transform: uppercase;
+  border-radius: 25px;
+  -webkit-border-radius: 25px;
+  -moz-border-radius: 25px;
+  -ms-border-radius: 25px;
+  -o-border-radius: 25px;
+  transition: background-color 1s ease;
+  -webkit-transition: background-color 1s ease;
+  -moz-transition: background-color 1s ease;
+  -ms-transition: background-color 1s ease;
+  -o-transition: background-color 1s ease;
+}
+
+.button-form:hover{
+  box-shadow: 0 0 20px #646cff;
+}
+.div_link_to_logIn_page {
+  width: 100%;
+}
+.link_to_logIn_page {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  transition: all ease 0.5s;
+  width: 100%;
+  &:hover {
+    color: #454ef8;
+  }
+}
+
+@media (max-width: 800px) {
+  .fieldset {
+    flex-direction: column;
+  }
+  .link_to_logIn_page {
+    font-size: 5vw;
+  }
+}

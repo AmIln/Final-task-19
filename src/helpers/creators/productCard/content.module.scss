@@ -1,0 +1,233 @@
+.card-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  text-decoration: none;
+  overflow: hidden;
+  border-radius: 20px;
+}
+.card {
+  width: 30vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  border: 2px solid #646cff;
+  background-color: #1c26427f;
+}
+
+.card__image {
+  width: 100%;
+  height: 30vw;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  box-shadow: 0 0 10px #646cff;
+  border-color: #646cff;
+}
+
+.card__description {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-link:hover .card__name {
+  color: #646cff;
+}
+
+.card-link:hover {
+  box-shadow: 0 0 20px #646cff;
+}
+
+.card__name {
+  color: #d1d1d1;
+  font-size: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  padding: 0 10px 0 10px;
+  width: 100%;
+}
+
+.price-block {
+  width: 100%;
+  padding-left: 15px;
+  display: flex;
+  gap: 15px;
+  font-size: 2rem;
+}
+
+.card__discound {
+  color: #64ff8b;
+}
+.card__price {
+  color: #646cff;
+}
+.card__price_inactive {
+  font-size: 1.5rem;
+  color: #fb8500;
+  text-decoration: line-through;
+}
+
+.buy-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: auto;
+  padding: 0 10px 10px 10px;
+}
+.counter-block {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.counter-buttons-wrapper {
+  position: relative;
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.button__buy {
+  width: 40%;
+  height: 50px;
+  color: #fff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  margin: auto;
+  background: #646cff;
+  border: none;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+.button__basket {
+  min-width: 50%;
+  max-width: 60%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.5rem;
+  cursor: not-allowed;;
+  background: #646cff;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+
+
+.button__delete, .product-count, .button__add {
+  min-width: 30%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 2rem;
+  background-color: rgba(0, 150, 255, 0.08);
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.button_disable {
+  display: none;
+}
+
+.pages-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  order: 1;
+}
+.page-number {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.5rem;
+  border: 1px solid #646cff;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+.page-number:hover {
+  box-shadow: 0 0 20px #646cff;
+}
+.page-number_active {
+  background-color: #36798b;
+}
+
+@media (max-width: 750px) {
+  .card {
+    width: 45vw;
+  }
+  .card__image {
+    height: 45vw;
+  }
+}
+
+@media (max-width: 550px) {
+  .card {
+    width: 80vw;
+  }
+  .card__image {
+    height: 80vw;
+  }
+  .card-link {
+    border: 1px solid gray;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+  }
+  .card__description {
+    padding: 10px;
+  }
+  .card__name {
+    text-align: center;
+  }
+}

@@ -1,0 +1,23 @@
+.form {
+  width: 50%;
+  height: 100%;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.input-email {
+  border: 1px solid red;
+}
+.input-name {
+  border: 1px solid green;
+}
+.input-surname {
+  border: 1px solid grey;
+}
+.input-password {
+  border: 1px solid yellow;
+}
+.button-form {
+  background-color: aquamarine;
+}

@@ -1,0 +1,40 @@
+
+curl https://auth.europe-west1.gcp.commercetools.com/oauth/token \
+     --basic --user "4It-vEV7mj5i9s44ngEgj7wE:1XhkL9aVoCgtQ2FU1u_dRG_R4QhzkV-e" \
+     -X POST \
+     -d "grant_type=client_credentials&scope=manage_cart_discounts:final-task-19:the-good-store manage_orders:final-task-19:the-good-store manage_my_orders:final-task-19:the-good-store manage_my_profile:final-task-19:the-good-store manage_my_shopping_lists:final-task-19:the-good-store manage_customers:final-task-19:the-good-store manage_shopping_lists:final-task-19:the-good-store manage_project:final-task-19"
+
+
+Date created: 01/05/2024 14:20
+API client created. To ensure the security of your project, the credentials are accessible only at the time you create it. Make sure to save the credentials in a secure location.
+Client credential flow
+More information
+Use these credentials to access the project via API:
+final-task-19
+
+
+project_key
+final-task-19
+
+
+client_id
+4It-vEV7mj5i9s44ngEgj7wE
+
+
+secret
+1XhkL9aVoCgtQ2FU1u_dRG_R4QhzkV-e
+
+
+scope
+manage_cart_discounts:final-task-19:the-good-store manage_orders:final-task-19:the-good-store manage_my_orders:final-task-19:the-good-store manage_my_profile:final-task-19:the-good-store manage_my_shopping_lists:final-task-19:the-good-store manage_customers:final-task-19:the-good-store manage_shopping_lists:final-task-19:the-good-store manage_project:final-task-19
+
+
+API URL
+https://api.europe-west1.gcp.commercetools.com
+
+
+Auth URL
+https://auth.europe-west1.gcp.commercetools.com
+
+
+You can download the credentials in various formats below. Doing so may assist you in using the credentials in cURL, an SDK or in other environments.

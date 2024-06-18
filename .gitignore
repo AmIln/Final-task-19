@@ -1,0 +1,27 @@
+# Node.js
+node_modules/
+
+# Build output
+dist/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# IDE files
+.idea/
+.vscode/
+
+# Cache files
+.cache/
+
+# Environment variables
+.env
+
+# Husky
+.husky/

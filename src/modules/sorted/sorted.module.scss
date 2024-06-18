@@ -1,0 +1,112 @@
+.settings-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap-reverse;
+  gap: 20px;
+}
+
+.filterIcon {
+  position: relative;
+  cursor: pointer;
+  flex: 0 0 60px;
+  min-height: 60px;
+  background-color: aliceblue;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/3841/3841533.png");
+  background-position: center;
+  background-size: 75%;
+  background-repeat: no-repeat;
+  border: 1px solid gold;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+.filterIcon:hover {
+  background-size: 70%;
+}
+
+.filterFinder {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 5px 5px 20px 5px;
+  // background-color: aliceblue;
+  background-color: #454ef8;
+  border: 2px solid #2724dc;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+  transition:
+    width 1s,
+    height 1s;
+  -webkit-transition:
+    width 1s,
+    height 1s;
+  -moz-transition:
+    width 1s,
+    height 1s;
+  -ms-transition:
+    width 1s,
+    height 1s;
+  -o-transition:
+    width 1s,
+    height 1s;
+  color: white;
+}
+.filterFinder_hide {
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  border: none;
+  padding: 0;
+}
+
+.filterFinder__close {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  margin-right: auto;
+  background-image: url("https://cdn-icons-png.flaticon.com/512/7782/7782773.png");
+  background-position: center;
+  background-size: 75%;
+  background-repeat: no-repeat;
+  border: 1px solid gold;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
+}
+.filterFinder__close:hover {
+  background-size: 70%;
+}
+
+.sorted {
+  display: flex;
+  gap: 10px;
+}
+
+.counter-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reset-filters {
+  background-color: #2724dc;
+  color: white;
+  font-weight: bold;
+  border: radius 20px;
+}
