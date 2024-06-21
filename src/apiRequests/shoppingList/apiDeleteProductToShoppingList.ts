@@ -2,7 +2,9 @@ import { getProjectHost } from "../../helpers/getsAPI";
 import { LineItem } from "../../helpers/interfaces/LineItem";
 import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
 import { apiGetShoppingList } from "./apiGetShoppingList";
+import { changeLineItemQuantityCart } from "./changeLineItemQuantityCart";
 import { getIdListByProductId } from "./getIdListByProductId";
+import { removeLineItemToCart } from "./removeLineItemToCart";
 
 export async function apiDeleteProductToShoppingList(idProduct: string, deleteAll?: boolean): Promise<void> {
   const myHeaders = new Headers();
@@ -16,9 +18,14 @@ export async function apiDeleteProductToShoppingList(idProduct: string, deleteAl
   const idLineItem = (await getIdListByProductId(idProduct, shoppingList)) as LineItem;
 
   let resQuantity = idLineItem.quantity - 1;
-  if (deleteAll) resQuantity = 0;
+  // удалить полностью товар из корзины/шопинг-листа
+  if (deleteAll) {
+    resQuantity = 0;
+    removeLineItemToCart(idProduct);
+  }
   // ТОВАРА БОЛЬШЕ НЕТ В КОРЗИНЕ
   if (!idLineItem.quantity) {
+    removeLineItemToCart(idProduct);
     return;
   }
 
@@ -45,6 +52,10 @@ export async function apiDeleteProductToShoppingList(idProduct: string, deleteAl
 
     const result = await response.text();
     const json = JSON.parse(result);
+
+    // обновляем корзину вместе в шоппинг-листом
+    changeLineItemQuantityCart();
+
     return json;
   } catch (error) {
     console.log(error);
