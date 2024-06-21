@@ -1,10 +1,10 @@
-import { getProjectHost } from "../../helpers/getsAPI";
+import { getProjectHost } from "../../../helpers/getsAPI";
+import { Promotion } from "../../../helpers/interfaces/Promotion";
 
-export async function useDiscountCodeById(id: string) {
+export async function getPromocodeById(id: string): Promise<Promotion | false> {
   const myHeaders = new Headers();
   const token = sessionStorage.getItem("token");
   const tokenType = sessionStorage.getItem("token-type");
-  myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Authorization", `${tokenType} ${token}`);
   const host = getProjectHost();
 
@@ -13,13 +13,15 @@ export async function useDiscountCodeById(id: string) {
     headers: myHeaders,
     redirect: "follow" as const,
   };
-  try {
-    const response = await fetch(`${host}/cart-discounts/${id}`, requestOptions);
 
+  try {
+    const response = await fetch(`${host}/discount-codes/${id}`, requestOptions);
     const result = await response.text();
-    const json = JSON.parse(result);
+    const json = JSON.parse(result) as Promotion;
+
     return json;
   } catch (error) {
     console.log(error);
+    return false;
   }
 }

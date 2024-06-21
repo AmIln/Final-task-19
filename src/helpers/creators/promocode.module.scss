@@ -1,0 +1,46 @@
+.promocode {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.promocode__key {
+  position: relative;
+  cursor: pointer;
+  color: aliceblue;
+  padding: 5px;
+  background-color: #b20f9c;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+.promocode__key::after {
+  content: "you copied the promo code";
+  width: 200px;
+  position: absolute;
+  z-index: 888;
+  top: 0;
+  left: 0;
+  background-color: blue;
+  padding: 5px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.2s linear;
+  -webkit-transition: opacity 0.2s linear;
+  -moz-transition: opacity 0.2s linear;
+  -ms-transition: opacity 0.2s linear;
+  -o-transition: opacity 0.2s linear;
+}
+
+.promocode__key_active::after {
+  opacity: 1;
+}

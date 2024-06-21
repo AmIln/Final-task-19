@@ -1,9 +1,14 @@
 import { getTotalCost } from "./getTotalCost";
 import { apiGetDiscountCodes } from "../../apiRequests/shoppingList/apiGetDiscountCodes";
-import { useDiscountCodeById } from "../../apiRequests/shoppingList/useDiscountCodeById";
-import { emptyBasketPageCreator } from "./emptyBasketPage";
+import { emptyBasketPageCreator, isEmptyBasket } from "./emptyBasketPage";
 import { deleteAllProductFromBasket } from "./deleteAllProductFromBasket";
 import { showBasketItems } from "./showBasketItems";
+import { addPromocodeToCart } from "../../apiRequests/shoppingList/promocodes/addPromocodeToCart";
+import { getCart } from "../../apiRequests/shoppingList/getCart";
+import { getPromocodeById } from "../../apiRequests/shoppingList/promocodes/getPromocodeById";
+import { getCartDiscoundByKey } from "../../apiRequests/shoppingList/promocodes/getCartDiscoundByKey";
+import { removeAllLinesItemToCart } from "../../apiRequests/shoppingList/removeAllLinesItemToCart";
+import { createNotification } from "../../notification/createNotificationElem";
 
 export async function createBasketPage() {
   const content = document.querySelector(".content") as HTMLDivElement;
@@ -14,17 +19,39 @@ export async function createBasketPage() {
 
   const totalCostWraper = document.createElement("div");
   totalCostWraper.classList.add("total_cost_wraper");
-  const isEmptyBasket = await getTotalCost(totalCostWraper);
+  const isEmpty = await isEmptyBasket();
 
   await showBasketItems();
 
   const arrayOfCodes = await apiGetDiscountCodes();
+
+  // получение корзины
+  const cartId = sessionStorage.getItem("cartId");
+  if (!cartId) return false;
+  const cart = await getCart();
 
   const discountWraper = document.createElement("div");
   discountWraper.classList.add("discont_wraper");
   const discontInput = document.createElement("input");
   discontInput.placeholder = "Input promo code";
   discontInput.classList.add("discont_input");
+
+  if (cart && cart.discountCodes.length > 0) {
+    const activePromocode = await getPromocodeById(cart.discountCodes[0].discountCode.id);
+
+    discontInput.value = activePromocode ? activePromocode.key : "";
+    const discound = await getCartDiscoundByKey(discontInput.value);
+    if (!discound) return false;
+
+    await getTotalCost(totalCostWraper, cart, discound);
+    discontInput.classList.add("true_promo_code");
+    discontInput.classList.remove("false_promo_code");
+  }
+
+  discontInput.addEventListener("click", () => {
+    discontInput.select();
+  });
+
   const discontBtn = document.createElement("div");
   discontBtn.classList.add("discont_btn");
   discontBtn.classList.add("nav__item");
@@ -33,11 +60,24 @@ export async function createBasketPage() {
     if (arrayOfCodes?.includes(discontInput.value)) {
       discontInput.classList.add("true_promo_code");
       discontInput.classList.remove("false_promo_code");
-      const discoutnObj = await useDiscountCodeById(discontInput.value);
-      await getTotalCost(totalCostWraper, discoutnObj);
+
+      await addPromocodeToCart(discontInput.value);
+
+      if (cart && cart.discountCodes.length > 0) {
+        const discound = await getCartDiscoundByKey(discontInput.value);
+        if (!discound) return false;
+
+        await getTotalCost(totalCostWraper, cart, discound);
+      } else {
+        await getTotalCost(totalCostWraper);
+      }
     } else {
+      createNotification("error", "non-existent promo code");
+
       discontInput.classList.remove("true_promo_code");
       discontInput.classList.add("false_promo_code");
+
+      await getTotalCost(totalCostWraper);
     }
   });
 
@@ -75,15 +115,16 @@ export async function createBasketPage() {
   NoBtn.addEventListener("click", () => {
     modalWindowWraper.style.display = "none";
   });
-  YesBtn.addEventListener("click", () => {
-    deleteAllProductFromBasket();
+  YesBtn.addEventListener("click", async () => {
+    await deleteAllProductFromBasket();
+    await removeAllLinesItemToCart();
     modalWindowWraper.style.display = "none";
   });
 
   discountWraper.append(discontInput, discontBtn);
   costAndPromoWraper.append(discountWraper, deleteAllBtn, totalCostWraper);
   content.append(costAndPromoWraper, modalWindowWraper);
-  if (isEmptyBasket) {
+  if (isEmpty) {
     emptyBasketPageCreator();
   }
 }

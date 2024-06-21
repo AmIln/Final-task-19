@@ -1,26 +1,29 @@
 import { getProjectHost } from "../../helpers/getsAPI";
 import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
-import { apiGetProductById } from "../apiGetProductById";
-import { addShoppingListToCart } from "./addShoppingListToCart";
 import { apiGetShoppingList } from "./apiGetShoppingList";
+import { changeLineItemQuantityCart } from "./changeLineItemQuantityCart";
+import { getCart } from "./getCart";
 
-export async function apiAddProductToShoppingList(idProduct: string): Promise<void> {
+export async function addShoppingListToCart() {
   const myHeaders = new Headers();
   const token = sessionStorage.getItem("token");
   const tokenType = sessionStorage.getItem("token-type");
   myHeaders.append("Authorization", `${tokenType} ${token}`);
   const host = getProjectHost();
 
-  const product = await apiGetProductById(idProduct);
   const shoppingList = (await apiGetShoppingList()) as ShoppingList;
+  const cart = await getCart();
+  if (!cart) return;
 
   const raw = JSON.stringify({
-    version: shoppingList.version,
+    version: cart.version,
     actions: [
       {
-        action: "addLineItem",
-        productId: product?.id,
-        quantity: 1,
+        action: "addShoppingList",
+        shoppingList: {
+          id: shoppingList.id,
+          typeId: "shopping-list",
+        },
       },
     ],
   });
@@ -33,13 +36,13 @@ export async function apiAddProductToShoppingList(idProduct: string): Promise<vo
   };
 
   try {
-    const response = await fetch(`${host}/shopping-lists/${shoppingList.id}`, requestOptions);
+    const response = await fetch(`${host}/carts/${cart.id}`, requestOptions);
 
     const result = await response.text();
     const json = JSON.parse(result);
 
-    // добавляем продукт в корзину
-    await addShoppingListToCart();
+    // меняем количество товаров в корзине
+    await changeLineItemQuantityCart();
 
     return json;
   } catch (error) {
