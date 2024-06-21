@@ -1,6 +1,7 @@
 import { getProjectHost } from "../../helpers/getsAPI";
 import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
 import { apiGetShoppingList } from "./apiGetShoppingList";
+import { createCart } from "./createCart";
 
 export async function apiCreateAnonymousShoppingList(): Promise<ShoppingList | void> {
   const myHeaders = new Headers();
@@ -40,6 +41,8 @@ export async function apiCreateAnonymousShoppingList(): Promise<ShoppingList | v
     const result = await response.text();
     const json = JSON.parse(result) as ShoppingList;
     sessionStorage.setItem("basketKey", `Anonymous-${token}-shopping-list`);
+    // создаем корзину
+    await createCart();
     return json;
   } catch (error) {
     console.log(error);
