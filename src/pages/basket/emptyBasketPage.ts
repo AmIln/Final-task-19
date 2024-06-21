@@ -1,3 +1,4 @@
+import { getCart } from "../../apiRequests/shoppingList/getCart";
 import { route } from "../../router/route";
 
 export function emptyBasketPageCreator() {
@@ -25,4 +26,15 @@ export function emptyBasketPageCreator() {
 
   messageWraper.append(mainText, secondText, button);
   content.append(messageWraper);
+}
+
+export async function isEmptyBasket(): Promise<boolean> {
+  const cartId = sessionStorage.getItem("cartId");
+  if (!cartId) return false;
+  const cart = await getCart();
+
+  if (cart && cart.lineItems.length > 0) {
+    return false;
+  }
+  return true;
 }
