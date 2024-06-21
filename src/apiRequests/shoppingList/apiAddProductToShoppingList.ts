@@ -1,9 +1,10 @@
 import { getProjectHost } from "../../helpers/getsAPI";
 import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
 import { apiGetProductById } from "../apiGetProductById";
+import { addShoppingListToCart } from "./addShoppingListToCart";
 import { apiGetShoppingList } from "./apiGetShoppingList";
 
-export async function apiAddProductToShoppingList(idProduct: string) {
+export async function apiAddProductToShoppingList(idProduct: string): Promise<void> {
   const myHeaders = new Headers();
   const token = sessionStorage.getItem("token");
   const tokenType = sessionStorage.getItem("token-type");
@@ -11,7 +12,6 @@ export async function apiAddProductToShoppingList(idProduct: string) {
   const host = getProjectHost();
 
   const product = await apiGetProductById(idProduct);
-
   const shoppingList = (await apiGetShoppingList()) as ShoppingList;
 
   const raw = JSON.stringify({
@@ -37,6 +37,10 @@ export async function apiAddProductToShoppingList(idProduct: string) {
 
     const result = await response.text();
     const json = JSON.parse(result);
+
+    // добавляем продукт в корзину
+    await addShoppingListToCart();
+
     return json;
   } catch (error) {
     console.log(error);
