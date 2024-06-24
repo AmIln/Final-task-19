@@ -1,6 +1,6 @@
 import { apiAddProductToShoppingList } from "../../apiRequests/shoppingList/apiAddProductToShoppingList";
 import { apiDeleteProductToShoppingList } from "../../apiRequests/shoppingList/apiDeleteProductToShoppingList";
-import { apiGetShoppingList } from "../../apiRequests/shoppingList/apiGetShoppingList";
+import { getCart } from "../../apiRequests/shoppingList/getCart";
 import { createNotification } from "../../notification/createNotificationElem";
 import { emptyBasketPageCreator } from "./emptyBasketPage";
 import { getTotalCost } from "./getTotalCost";
@@ -18,18 +18,16 @@ async function updateItem(idProduct: string, quantityChange: number, itemWrapper
   plusButton.setAttribute("disabled", "true");
   deleteBtn.setAttribute("disabled", "true");
 
-  const shoppingList = await apiGetShoppingList();
-  if (!shoppingList) {
-    console.log("Shopping list is empty.");
+  const cartList = await getCart();
+  if (!cartList) {
     minusButton.removeAttribute("disabled");
     plusButton.removeAttribute("disabled");
     return;
   }
 
-  const lineItem = shoppingList.lineItems.find((item) => item.productId === idProduct);
+  const lineItem = cartList.lineItems.find((item) => item.productId === idProduct);
 
   if (!lineItem) {
-    console.log("Item not found in the shopping list.");
     minusButton.removeAttribute("disabled");
     plusButton.removeAttribute("disabled");
     deleteBtn.removeAttribute("disabled");
@@ -96,5 +94,3 @@ export async function updateBasketItems() {
     }
   });
 }
-// реализовать пункт RSS-ECOMM-4_23
-// настроить кнопку to Basket на главной странице
