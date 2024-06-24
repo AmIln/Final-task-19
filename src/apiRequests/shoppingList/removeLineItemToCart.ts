@@ -1,9 +1,5 @@
 import { getProjectHost } from "../../helpers/getsAPI";
-import { LineItem } from "../../helpers/interfaces/LineItem";
-import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
-import { apiGetShoppingList } from "./apiGetShoppingList";
 import { getCart } from "./getCart";
-import { getIdListByProductId } from "./getIdListByProductId";
 
 export async function removeLineItemToCart(idProduct: string): Promise<void> {
   const myHeaders = new Headers();
@@ -12,18 +8,23 @@ export async function removeLineItemToCart(idProduct: string): Promise<void> {
   myHeaders.append("Authorization", `${tokenType} ${token}`);
   const host = getProjectHost();
 
-  const shoppingList = (await apiGetShoppingList()) as ShoppingList;
   const cart = await getCart();
   if (!cart) return;
 
-  const idLineItem = (await getIdListByProductId(idProduct, shoppingList)) as LineItem;
+  const LineItem = cart.lineItems.find((item) => {
+    if (item.productId === idProduct) {
+      return item.id;
+    }
+    return false;
+  });
+  if (!LineItem) return;
 
   const raw = JSON.stringify({
     version: cart.version,
     actions: [
       {
         action: "removeLineItem",
-        lineItemId: idLineItem.id,
+        lineItemId: LineItem.id,
       },
     ],
   });
