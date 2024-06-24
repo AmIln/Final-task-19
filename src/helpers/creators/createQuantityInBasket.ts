@@ -1,9 +1,9 @@
-import { apiGetShoppingList } from "../../apiRequests/shoppingList/apiGetShoppingList";
+import { getCart } from "../../apiRequests/shoppingList/getCart";
 
 export async function createQualityInBasket() {
   const qualityWraper = document.querySelector(".count_product_wraper") as HTMLElement;
-  const list = await apiGetShoppingList();
-  if (list && list.lineItems) {
-    qualityWraper.innerHTML = `${list.lineItems.length}`;
+  const cartList = await getCart();
+  if (cartList && cartList.lineItems) {
+    qualityWraper.innerHTML = `${cartList.lineItems.length}`;
   }
 }

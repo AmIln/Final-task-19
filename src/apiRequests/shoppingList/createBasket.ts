@@ -3,15 +3,19 @@ import { apiCreateAnonymousShoppingList } from "./apiCreateAnonymousShoppingList
 import { apiCreateShoppingList } from "./apiCreateShoppingList";
 import { apiGetShoppingList } from "./apiGetShoppingList";
 import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
+import { createCart } from "./createCart";
 
 export async function createBasket(): Promise<ShoppingList> {
   const user = localStorage.getItem("customerId");
   const customer = user ? await getCustomerById(user) : false;
   const token = sessionStorage.getItem("token");
 
+  // создаем корзину
+  await createCart();
+
   // если пользователь вошел в систему
   if (user) {
-    const shoppingListUser = (await apiGetShoppingList()) as ShoppingList;
+    const shoppingListUser = await apiGetShoppingList();
     if (shoppingListUser) {
       return shoppingListUser;
     }
@@ -21,13 +25,13 @@ export async function createBasket(): Promise<ShoppingList> {
     return newShoppingListUser;
   } else {
     // анонимный пользователь
-    const anonymousShoppingList = (await apiGetShoppingList()) as ShoppingList;
+    const anonymousShoppingList = await apiGetShoppingList();
 
-    // проверяем есть ли анонимная корзина
+    // проверяем есть ли анонимный лист покупок
     if (anonymousShoppingList) {
       return anonymousShoppingList;
     } else {
-      // создаем анонимную корзину
+      // создаем анонимный лист покупок
       await apiCreateAnonymousShoppingList();
       sessionStorage.setItem("basketKey", `Anonymous-${token}-shopping-list`);
       return (await apiGetShoppingList()) as ShoppingList;

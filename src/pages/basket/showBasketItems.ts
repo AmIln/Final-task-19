@@ -1,7 +1,10 @@
-import { apiGetShoppingList } from "../../apiRequests/shoppingList/apiGetShoppingList";
 import { apiGetProductById } from "../../apiRequests/apiGetProductById";
 import { updateBasketItems } from "./updateBasketItems";
 import { removeBasketItem } from "./removeBasketItem";
+import { removeLineItemToCart } from "../../apiRequests/shoppingList/removeLineItemToCart";
+import { getCart } from "../../apiRequests/shoppingList/getCart";
+import { createElement } from "../../helpers/creators/createElement";
+import { createImage } from "../../helpers/creators/createImage";
 
 async function getProductDetails(productId: string) {
   const product = await apiGetProductById(productId);
@@ -10,35 +13,32 @@ async function getProductDetails(productId: string) {
 
 export async function showBasketItems() {
   const content = document.querySelector(".content") as HTMLDivElement;
-  content.innerHTML = "";
 
-  const shoppingList = await apiGetShoppingList();
+  const cartList = await getCart();
 
-  if (!shoppingList) {
+  if (!cartList) {
     content.innerHTML = "Your basket is empty.";
     return;
   }
 
-  const itemsContainer = document.createElement("div");
-  itemsContainer.classList.add("items_container");
+  const itemsContainer = createElement("div", "items_container");
 
-  for (const lineItem of shoppingList.lineItems) {
+  for (const lineItem of cartList.lineItems) {
     const productDetails = await getProductDetails(lineItem.productId);
 
     if (productDetails) {
-      const itemWrapper = document.createElement("div");
-      itemWrapper.classList.add("item_wrapper");
+      const itemWrapper = createElement("div", "item_wrapper");
 
-      const itemImage = document.createElement("img");
-      itemImage.classList.add("item_image");
-      itemImage.src = productDetails.masterVariant.images[0].url;
+      const itemImage = createImage(
+        "item_image",
+        productDetails.masterVariant.images[0].url,
+        productDetails.masterVariant.key,
+        150,
+        150,
+      );
 
-      const itemName = document.createElement("div");
-      itemName.classList.add("item_name");
-      itemName.innerHTML = productDetails.name.en;
-
-      const itemPrice = document.createElement("div");
-      itemPrice.classList.add("item_price");
+      const itemName = createElement("div", "item_name", productDetails.name.en);
+      const itemPrice = createElement("div", "item_price");
 
       const price = productDetails.masterVariant.prices[0].value.centAmount / 100;
       const discountPrice = productDetails.masterVariant.prices[0].discounted?.value.centAmount;
@@ -55,27 +55,23 @@ export async function showBasketItems() {
         totalPriceForItem = price * lineItem.quantity;
       }
 
-      const itemQuantity = document.createElement("div");
-      itemQuantity.classList.add("item_quantity");
-      itemQuantity.id = lineItem.productId;
+      const minusButton = createElement("button", "login-btn-grad", "-");
+      minusButton.classList.add("quantity-btn", "minus-btn");
+      const plusButton = createElement("button", "login-btn-grad", "+");
+      plusButton.classList.add("quantity-btn", "plus-btn");
+      const quantityValue = createElement("span", "product-counter", String(lineItem.quantity));
 
-      const minusButton = document.createElement("button");
-      minusButton.textContent = "-";
-      minusButton.classList.add("login-btn-grad", "quantity-btn", "minus-btn");
-      const plusButton = document.createElement("button");
-      plusButton.classList.add("login-btn-grad", "quantity-btn", "plus-btn");
-      plusButton.textContent = "+";
-      const quantityValue = document.createElement("span");
-      quantityValue.textContent = lineItem.quantity + "";
+      const itemQuantity = createElement("div", "item_quantity", "", lineItem.productId);
       itemQuantity.append(minusButton, quantityValue, plusButton);
 
-      const itemTotalPrice = document.createElement("div");
-      itemTotalPrice.classList.add("item_total_price");
-      itemTotalPrice.innerHTML = `Total: $${totalPriceForItem.toFixed(2)}`;
+      const itemTotalPrice = createElement("div", "item_total_price", `Total: $${totalPriceForItem.toFixed(2)}`);
 
-      const deleteButton = document.createElement("button");
-      deleteButton.textContent = "Delete";
-      deleteButton.classList.add("login-btn-grad", "delete-item");
+      const deleteButton = createElement("button", "login-btn-grad", "Delete");
+      deleteButton.classList.add("delete-item");
+
+      deleteButton.addEventListener("click", async () => {
+        await removeLineItemToCart(lineItem.productId);
+      });
 
       itemWrapper.append(itemImage, itemName, itemPrice, itemQuantity, itemTotalPrice, deleteButton);
       itemsContainer.appendChild(itemWrapper);

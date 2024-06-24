@@ -7,6 +7,8 @@ export async function createCart() {
   myHeaders.append("Authorization", `${tokenType} ${token}`);
   const host = getProjectHost();
 
+  if (sessionStorage.getItem("cartId")) return;
+
   const raw = JSON.stringify({
     currency: "USD",
   });

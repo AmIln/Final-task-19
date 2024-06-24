@@ -1,10 +1,10 @@
-import { apiGetShoppingList } from "../../apiRequests/shoppingList/apiGetShoppingList";
-import { ShoppingList } from "../interfaces/ShoppingList";
+import { getCart } from "../../apiRequests/shoppingList/getCart";
 
 export async function checkProductInBasket(idProduct: string): Promise<string> {
   let quantity = "0";
-  const ShoppingList = (await apiGetShoppingList()) as ShoppingList;
-  ShoppingList.lineItems.forEach((list) => {
+  const cartList = await getCart();
+  if (!cartList) return quantity;
+  cartList.lineItems.forEach((list) => {
     if (list.productId === idProduct) {
       quantity = String(list.quantity);
     }
