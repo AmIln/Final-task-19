@@ -1,4 +1,3 @@
-import { apiGetShoppingList } from "../../apiRequests/shoppingList/apiGetShoppingList";
 import { createQualityInBasket } from "../../helpers/creators/createQuantityInBasket";
 import { Promotion } from "../../helpers/interfaces/Promotion";
 import { Cart } from "@commercetools/platform-sdk";
@@ -6,25 +5,37 @@ import { calculatePriceAfterDiscound } from "./calculatePriceAfterDiscound";
 import { getCart } from "../../apiRequests/shoppingList/getCart";
 import { evaluateCartPredicate } from "../../apiRequests/shoppingList/promocodes/addPromocodeToCart";
 import { getPromocodeById } from "../../apiRequests/shoppingList/promocodes/getPromocodeById";
-import { createNotification } from "../../notification/createNotificationElem";
+import { isEmptyBasket } from "./emptyBasketPage";
+import { createElement } from "../../helpers/creators/createElement";
+import { promocodeDoesNotWork } from "./promocodeDoesNotWork";
 require("./basketPage.scss");
 
 export async function getTotalCost(wraper: HTMLElement, cart?: Cart, discound?: Promotion): Promise<void> {
+  if (await isEmptyBasket()) return;
+
   const userCart = await getCart();
-  const list = await apiGetShoppingList();
-  if (userCart && list && discound) {
-    if (!(await evaluateCartPredicate(list, discound))) {
-      wraper.innerHTML = `The total cost is: ${Math.round(userCart.totalPrice.centAmount) / 100} $`;
-      createNotification("info", "Promo code does not match your cart");
+  console.log(userCart);
+
+  if (userCart && userCart.lineItems.length > 0 && discound) {
+    if (!(await evaluateCartPredicate(userCart.lineItems, discound))) {
+      promocodeDoesNotWork(wraper, userCart.totalPrice.centAmount);
       return;
+    } else {
+      const discontInput = document.getElementById("discont_input") as HTMLInputElement;
+      discontInput.classList.add("true_promo_code");
+      discontInput.classList.remove("false_promo_code");
     }
   }
-  if (userCart && list && userCart.discountCodes.length > 0) {
+
+  if (userCart && userCart.lineItems.length > 0 && userCart.discountCodes.length > 0) {
     const discound = getPromocodeById(userCart.discountCodes[0].discountCode.id) as unknown as Promotion;
-    if (!(await evaluateCartPredicate(list, discound))) {
-      wraper.innerHTML = `The total cost is: ${Math.round(userCart.totalPrice.centAmount) / 100} $`;
-      createNotification("info", "Promo code does not match your cart");
+    if (!(await evaluateCartPredicate(userCart.lineItems, discound))) {
+      promocodeDoesNotWork(wraper, userCart.totalPrice.centAmount);
       return;
+    } else {
+      const discontInput = document.getElementById("discont_input") as HTMLInputElement;
+      discontInput.classList.add("true_promo_code");
+      discontInput.classList.remove("false_promo_code");
     }
   }
   const totalCost = userCart ? userCart.totalPrice.centAmount : 0;
@@ -37,16 +48,11 @@ export async function getTotalCost(wraper: HTMLElement, cart?: Cart, discound?: 
     if (discound) {
       price = await calculatePriceAfterDiscound(price, discound, cart);
     }
-    wraper.innerHTML = ``;
-    const costText = document.createElement("span");
-    costText.innerHTML = `The total cost is: `;
-    const newCost = document.createElement("span");
-    newCost.classList.add("valid_total_cost");
-    newCost.innerHTML = `${price.toFixed(1)} $`;
 
-    const oldCost = document.createElement("span");
-    oldCost.classList.add("invalid_total_cost");
-    oldCost.innerHTML = `${Math.round(totalCost) / 100} $`;
+    wraper.innerHTML = ``;
+    const costText = createElement("span", "description_total_cost", "The total cost is: ");
+    const newCost = createElement("span", "valid_total_cost", `${price.toFixed(1)} $`);
+    const oldCost = createElement("span", "invalid_total_cost", `${Math.round(totalCost) / 100} $`);
 
     wraper.append(costText, newCost, oldCost);
   } else {
