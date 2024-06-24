@@ -1,10 +1,9 @@
+import { LineItem } from "@commercetools/platform-sdk";
 import { getProjectHost } from "../../../helpers/getsAPI";
 import { Promotion } from "../../../helpers/interfaces/Promotion";
-import { ShoppingList } from "../../../helpers/interfaces/ShoppingList";
 import { createNotification } from "../../../notification/createNotificationElem";
 import { apiGetProductById } from "../../apiGetProductById";
 import { apiGetDiscountCodes } from "../apiGetDiscountCodes";
-import { apiGetShoppingList } from "../apiGetShoppingList";
 import { getCart } from "../getCart";
 import { getPromocodeByKey } from "./getPromocodeByKey";
 import { removeDiscoundCodeToCart } from "./removeDiscoundCodeToCart";
@@ -28,10 +27,7 @@ export async function addPromocodeToCart(key: string): Promise<void | false> {
   const promocode = await getPromocodeByKey(key);
   if (!promocode) return;
 
-  const shoppingList = await apiGetShoppingList();
-  if (!shoppingList) return;
-
-  const matchesPredicate = await evaluateCartPredicate(shoppingList, promocode);
+  const matchesPredicate = await evaluateCartPredicate(cart.lineItems, promocode);
 
   if (matchesPredicate) {
     const raw = JSON.stringify({
@@ -62,7 +58,7 @@ export async function addPromocodeToCart(key: string): Promise<void | false> {
   }
 }
 
-export async function evaluateCartPredicate(list: ShoppingList, promo: Promotion): Promise<boolean> {
+export async function evaluateCartPredicate(list: LineItem[], promo: Promotion): Promise<boolean> {
   // если промокод просто по всей корзине
   if (promo.cartPredicate === "1 = 1") {
     return true;
@@ -75,7 +71,7 @@ export async function evaluateCartPredicate(list: ShoppingList, promo: Promotion
 
   const categoryId = categoryIdMatch[1];
 
-  for (const lineItem of list.lineItems) {
+  for (const lineItem of list) {
     const product = await apiGetProductById(lineItem.productId);
     if (!product) return false;
 
