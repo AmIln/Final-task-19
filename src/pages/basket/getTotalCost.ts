@@ -14,7 +14,6 @@ export async function getTotalCost(wraper: HTMLElement, cart?: Cart, discound?: 
   if (await isEmptyBasket()) return;
 
   const userCart = await getCart();
-  console.log(userCart);
 
   if (userCart && userCart.lineItems.length > 0 && discound) {
     if (!(await evaluateCartPredicate(userCart.lineItems, discound))) {

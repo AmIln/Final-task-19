@@ -4,8 +4,6 @@ import { createContent } from "../../../helpers/creators/productCard/createConte
 
 export async function showProduct(target: HTMLElement): Promise<void> {
   const idProduct = target.id;
-  console.log("target:", target);
-  console.log("idProduct:", idProduct);
 
   const result = await apiGetProductById(idProduct);
   Promise.resolve(result)?.then((resolvedResult) => {

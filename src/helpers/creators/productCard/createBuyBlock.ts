@@ -1,10 +1,10 @@
-import { apiAddProductToShoppingList } from "../../../apiRequests/shoppingList/apiAddProductToShoppingList";
 import { apiDeleteProductToShoppingList } from "../../../apiRequests/shoppingList/apiDeleteProductToShoppingList";
 import { buyLoading, buyLoadingOff, buyLoadingOn } from "../../../modules/loading/buyLoading";
 import { checkProductInBasket } from "../../checks/checkProductInBasket";
 import { createElement } from "../createElement";
 import { createLink } from "../createLink";
 import { createQualityInBasket } from "../../creators/createQuantityInBasket";
+import { apiAddProductToShoppingList } from "../../../apiRequests/shoppingList/apiAddProductToShoppingList";
 
 export async function createBuyBlock(idProduct: string): Promise<HTMLElement> {
   const buyBlock = createElement("div", "buy-block");
@@ -51,8 +51,9 @@ export async function createBuyBlock(idProduct: string): Promise<HTMLElement> {
   minusButton.addEventListener("click", async () => {
     buyLoadingOn(counterWrapper);
     await apiDeleteProductToShoppingList(idProduct);
-    countProduct.textContent = await checkProductInBasket(idProduct);
-    if (countProduct.textContent === "0") {
+    const count = await checkProductInBasket(idProduct);
+    countProduct.textContent = count;
+    if (count === "0") {
       disableButtons(buyButton, arrayButtons);
       createQualityInBasket();
     }
@@ -71,6 +72,7 @@ function showButtons(buy: HTMLElement, array: HTMLElement[]) {
 }
 
 function disableButtons(buy: HTMLElement, array: HTMLElement[]) {
+  console.log("disableButtons");
   buy.classList.remove("button_disable");
   array.forEach((element) => {
     element.classList.add("button_disable");

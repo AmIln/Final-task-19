@@ -20,8 +20,8 @@
 }
 
 .promocode__key::after {
-  content: "you copied the promo code";
-  width: 200px;
+  content: "copy";
+  width: 100%;
   position: absolute;
   z-index: 888;
   top: 0;

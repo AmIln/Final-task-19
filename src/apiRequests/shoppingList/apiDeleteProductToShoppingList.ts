@@ -54,7 +54,7 @@ export async function apiDeleteProductToShoppingList(idProduct: string, deleteAl
     const json = JSON.parse(result);
 
     // обновляем корзину вместе в шоппинг-листом
-    changeLineItemQuantityCart();
+    await changeLineItemQuantityCart();
 
     return json;
   } catch (error) {
