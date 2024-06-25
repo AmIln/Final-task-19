@@ -47,6 +47,7 @@ export async function createCard(product: Result): Promise<HTMLElement> {
   }
 
   const buyBlock = await createBuyBlock(product.id);
+  const toBasketButton = buyBlock.querySelector(".button__basket");
 
   cardLink.addEventListener("click", (event: Event) => {
     event.preventDefault();
@@ -55,6 +56,10 @@ export async function createCard(product: Result): Promise<HTMLElement> {
     // если клик не по кнопке купить/и не блок с кнопками
     if (!ignoredButtons.includes(event.target as HTMLElement)) {
       route(cardLink.href, cardLink.id);
+    }
+    // клик по кнопке "в корзину"
+    if ((event.target as HTMLElement) === toBasketButton) {
+      route("#basket");
     }
   });
   cardDescr.append(buyBlock);
