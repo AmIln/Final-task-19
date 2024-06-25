@@ -12,34 +12,66 @@ export async function changeLineItemQuantityCart(): Promise<void> {
 
   const shoppingList = (await apiGetShoppingList()) as ShoppingList;
 
-  for (const lineItem of shoppingList.lineItems) {
+  // если шопинг лист пустой
+  if (shoppingList.lineItems.length <= 0) {
     const cart = await getCart();
     if (!cart) return;
-    const idCart = cart.lineItems.find((product) => product.productId === lineItem.productId);
-    if (!idCart) return;
+    for (const listItem of cart.lineItems) {
+      const newCart = await getCart();
+      if (!newCart) return;
+      const raw = JSON.stringify({
+        version: newCart.version,
+        actions: [
+          {
+            action: "removeLineItem",
+            lineItemId: listItem.id,
+          },
+        ],
+      });
 
-    const raw = JSON.stringify({
-      version: cart.version,
-      actions: [
-        {
-          action: "changeLineItemQuantity",
-          lineItemId: idCart.id,
-          quantity: lineItem.quantity,
-        },
-      ],
-    });
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow" as const,
+      };
 
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow" as const,
-    };
+      try {
+        await fetch(`${host}/carts/${newCart.id}`, requestOptions);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  } else {
+    for (const lineItem of shoppingList.lineItems) {
+      const cart = await getCart();
+      if (!cart) return;
+      const idCart = cart.lineItems.find((product) => product.productId === lineItem.productId);
+      if (!idCart) return;
 
-    try {
-      await fetch(`${host}/carts/${cart.id}`, requestOptions);
-    } catch (error) {
-      console.log(error);
+      const raw = JSON.stringify({
+        version: cart.version,
+        actions: [
+          {
+            action: "changeLineItemQuantity",
+            lineItemId: idCart.id,
+            quantity: lineItem.quantity,
+          },
+        ],
+      });
+
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow" as const,
+      };
+
+      try {
+        await fetch(`${host}/carts/${cart.id}`, requestOptions);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 }
