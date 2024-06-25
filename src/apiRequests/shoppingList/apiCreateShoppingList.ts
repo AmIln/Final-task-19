@@ -2,9 +2,8 @@ import { getProjectHost } from "../../helpers/getsAPI";
 import { ShoppingList } from "../../helpers/interfaces/ShoppingList";
 import { getCustomerById } from "../getCustomerById";
 import { apiGetShoppingList } from "./apiGetShoppingList";
-import { createCart } from "./createCart";
 
-export async function apiCreateShoppingList(customerId: string): Promise<ShoppingList | null> {
+export async function apiCreateShoppingList(customerId: string): Promise<ShoppingList | false> {
   const myHeaders = new Headers();
   const token = sessionStorage.getItem("token");
   const tokenType = sessionStorage.getItem("token-type");
@@ -46,12 +45,9 @@ export async function apiCreateShoppingList(customerId: string): Promise<Shoppin
     const result = await response.text();
     const json = JSON.parse(result) as ShoppingList;
 
-    // create Cart
-    await createCart();
-
     return json;
   } catch (error) {
     console.log(error);
-    return null;
+    return false;
   }
 }
