@@ -72,7 +72,6 @@ function showButtons(buy: HTMLElement, array: HTMLElement[]) {
 }
 
 function disableButtons(buy: HTMLElement, array: HTMLElement[]) {
-  console.log("disableButtons");
   buy.classList.remove("button_disable");
   array.forEach((element) => {
     element.classList.add("button_disable");
