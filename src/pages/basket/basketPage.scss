@@ -44,15 +44,23 @@
 }
 .empty_basket_message_wraper {
   font-size: 1.5rem;
-  width: 50vw;
+  min-width: 50vw;
+  max-width: 90vw;
   height: 50vh;
   color: white;
+  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 50px;
   background-color: #4b3636;
+  padding: 0 10px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
 }
 .empty_basket_main_text {
   font-size: 2rem;

@@ -19,14 +19,13 @@ export async function apiDeleteProductToShoppingList(idProduct: string, deleteAl
 
   let resQuantity = idLineItem.quantity - 1;
   // удалить полностью товар из корзины/шопинг-листа
-  if (deleteAll) {
+  if (deleteAll || resQuantity <= 0) {
     resQuantity = 0;
-    removeLineItemToCart(idProduct);
+    await removeLineItemToCart(idProduct);
   }
   // ТОВАРА БОЛЬШЕ НЕТ В КОРЗИНЕ
   if (!idLineItem.quantity) {
-    removeLineItemToCart(idProduct);
-    return;
+    await removeLineItemToCart(idProduct);
   }
 
   const raw = JSON.stringify({
